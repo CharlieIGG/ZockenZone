@@ -5,7 +5,7 @@ interface Coordinate {
     y: number;
 }
 
-interface GameState {
+export interface GameState {
     snake: Coordinate[];
     food: Coordinate;
     direction: 'UP' | 'RIGHT' | 'DOWN' | 'LEFT';
@@ -13,7 +13,13 @@ interface GameState {
 }
 
 const initialState: GameState = {
-    snake: [{ x: 5, y: 5 }],
+    snake: [
+        { x: 580, y: 300 },
+        { x: 560, y: 300 },
+        { x: 540, y: 300 },
+        { x: 520, y: 300 },
+        { x: 500, y: 300 },
+    ],
     food: { x: 10, y: 10 },
     direction: 'RIGHT',
     gameOver: false,
