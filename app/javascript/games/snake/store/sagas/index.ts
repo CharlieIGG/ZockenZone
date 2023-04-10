@@ -1,17 +1,16 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { moveSnake, resetGame } from '../actions';
 import { RootState } from '../index';
+import { moveSnake, resetGame } from '../reducers';
 
 function* moveSnakeSaga(): Generator<any, any, any> {
-    const direction: ReturnType<typeof selectDirection> = yield select(selectDirection);
-    yield put(moveSnake());
 
     const gameOver: ReturnType<typeof selectGameOver> = yield select(selectGameOver);
+
     if (gameOver) {
         yield put(resetGame());
     } else {
         yield delay(100);
-        yield moveSnakeSaga();
+        yield put(moveSnake());
     }
 }
 

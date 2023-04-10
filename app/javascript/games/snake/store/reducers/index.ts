@@ -35,21 +35,21 @@ const gameSlice = createSlice({
 
             let newHead: Coordinate = head;
             if (direction === 'UP') {
-                newHead = { x: head.x, y: head.y - 1 };
+                newHead = { x: head.x, y: head.y - 20 };
             } else if (direction === 'RIGHT') {
-                newHead = { x: head.x + 1, y: head.y };
+                newHead = { x: head.x + 20, y: head.y };
             } else if (direction === 'DOWN') {
-                newHead = { x: head.x, y: head.y + 1 };
+                newHead = { x: head.x, y: head.y + 20 };
             } else if (direction === 'LEFT') {
-                newHead = { x: head.x - 1, y: head.y };
+                newHead = { x: head.x - 20, y: head.y };
             }
 
             // Check if snake has collided with the walls
             if (
                 newHead.x < 0 ||
-                newHead.x >= 20 ||
+                newHead.x >= 1000 ||
                 newHead.y < 0 ||
-                newHead.y >= 20
+                newHead.y >= 600
             ) {
                 state.gameOver = true;
             }
@@ -71,7 +71,6 @@ const gameSlice = createSlice({
 
         changeDirection: (state, action: PayloadAction<{ direction: 'UP' | 'RIGHT' | 'DOWN' | 'LEFT' }>) => {
             const { direction } = action.payload;
-            const { snake } = state;
             const oppositeDirection: { [key in 'UP' | 'RIGHT' | 'DOWN' | 'LEFT']: 'UP' | 'RIGHT' | 'DOWN' | 'LEFT' } = {
                 UP: 'DOWN',
                 RIGHT: 'LEFT',
