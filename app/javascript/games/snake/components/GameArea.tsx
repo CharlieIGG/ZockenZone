@@ -25,8 +25,6 @@ export const GameArea = ({ height, width }: ICanvasBoard) => {
     clearBoard(ctx)
     drawObject(ctx, snake, "green");
     drawObject(ctx, [food], "red");
-    console.log(snake);
-
   }, [ctx, snake]);
 
   // start moving the snake

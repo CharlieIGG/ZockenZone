@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { generateRandomPosition } from '../../utilities';
+import { CANVAS_HEIGHT, CANVAS_WIDTH, generateRandomPosition, generateStartingSnake, SNAKE_SEGMENT_SIZE } from '../../utilities';
 
 interface Coordinate {
     x: number;
@@ -14,13 +14,7 @@ export interface GameState {
 }
 
 const initialState: GameState = {
-    snake: [
-        { x: 580, y: 300 },
-        { x: 560, y: 300 },
-        { x: 540, y: 300 },
-        { x: 520, y: 300 },
-        { x: 500, y: 300 },
-    ],
+    snake: generateStartingSnake(),
     food: generateRandomPosition(),
     direction: 'RIGHT',
     gameOver: false,
@@ -36,21 +30,21 @@ const gameSlice = createSlice({
 
             let newHead: Coordinate = head;
             if (direction === 'UP') {
-                newHead = { x: head.x, y: head.y - 20 };
+                newHead = { x: head.x, y: head.y - SNAKE_SEGMENT_SIZE };
             } else if (direction === 'RIGHT') {
-                newHead = { x: head.x + 20, y: head.y };
+                newHead = { x: head.x + SNAKE_SEGMENT_SIZE, y: head.y };
             } else if (direction === 'DOWN') {
-                newHead = { x: head.x, y: head.y + 20 };
+                newHead = { x: head.x, y: head.y + SNAKE_SEGMENT_SIZE };
             } else if (direction === 'LEFT') {
-                newHead = { x: head.x - 20, y: head.y };
+                newHead = { x: head.x - SNAKE_SEGMENT_SIZE, y: head.y };
             }
 
             // Check if snake has collided with the walls
             if (
                 newHead.x < 0 ||
-                newHead.x >= 1000 ||
+                newHead.x >= CANVAS_WIDTH ||
                 newHead.y < 0 ||
-                newHead.y >= 600
+                newHead.y >= CANVAS_HEIGHT
             ) {
                 state.gameOver = true;
             }

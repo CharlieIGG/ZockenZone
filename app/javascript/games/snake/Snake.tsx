@@ -9,7 +9,7 @@ const Snake = () => {
     <Provider store={store}>
       <div className="container-lg text-center">
         <h1 className="mt-5">SNAKE GAME</h1>
-        <GameArea height={600} width={1000} />
+        <GameArea height={600} width={600} />
       </div>
     </Provider>
   );
