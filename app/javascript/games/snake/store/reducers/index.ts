@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { generateRandomPosition } from '../../utilities';
 
 interface Coordinate {
     x: number;
@@ -20,7 +21,7 @@ const initialState: GameState = {
         { x: 520, y: 300 },
         { x: 500, y: 300 },
     ],
-    food: { x: 10, y: 10 },
+    food: generateRandomPosition(),
     direction: 'RIGHT',
     gameOver: false,
 };
@@ -95,10 +96,7 @@ const generateNewFood = (snake: Coordinate[]) => {
 
     // Generate random coordinates for the food
     do {
-        food = {
-            x: Math.floor(Math.random() * 20),
-            y: Math.floor(Math.random() * 20),
-        };
+        food = generateRandomPosition()
     } while (snake.some((part) => part.x === food.x && part.y === food.y));
 
     return food;

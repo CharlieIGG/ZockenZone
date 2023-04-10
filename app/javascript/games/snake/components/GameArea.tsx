@@ -11,29 +11,28 @@ export interface ICanvasBoard {
 
 export const GameArea = ({ height, width }: ICanvasBoard) => {
   const snake = useSelector((state: GameState) => state.snake);
+  const food = useSelector((state: GameState) => state.food);
   const dispatch = useDispatch();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
-  const [fruitPosition, setFruitPosition] = useState(generateRandomPosition());
 
-
+  // (re)draw the canvas
   useEffect(() => {
     const canvasContext = canvasRef.current?.getContext("2d") || null
     setCtx(canvasContext);
     clearBoard(ctx)
     drawObject(ctx, snake, "green");
-    drawObject(ctx, [fruitPosition], "red");
+    drawObject(ctx, [food], "red");
     console.log(snake);
 
   }, [ctx, snake]);
 
+  // start moving the snake
   useEffect(() => {
-    console.log("moving snake");
     dispatch(moveSnake());
   }, [])
-
 
   const handleKeyEvents = useCallback(
     (event: KeyboardEvent) => {
