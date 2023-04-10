@@ -3,13 +3,13 @@ import { RootState } from '../index';
 import { moveSnake, resetGame } from '../reducers';
 import { BASE_SPEED } from '../../utilities';
 
-function* moveSnakeSaga(state): Generator<any, any, any> {
+function* moveSnakeSaga(): Generator<any, any, any> {
 
     const gameOver: ReturnType<typeof selectGameOver> = yield select(selectGameOver);
     const score: ReturnType<typeof selectScore> = yield select(selectScore);
 
     if (gameOver) {
-        yield put(resetGame());
+        return;
     } else {
         const speedBonus = 1 + (score) / 750;
         yield delay(BASE_SPEED / speedBonus);
