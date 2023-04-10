@@ -3,12 +3,14 @@ import store from "./store";
 import React from "react";
 import { GameArea } from "./components/GameArea";
 import { createRoot } from "react-dom/client";
+import { ScoreBoard } from "./components/ScoreBoard";
 
 const Snake = () => {
   return (
     <Provider store={store}>
       <div className="container-lg text-center">
         <h1 className="mt-5">SNAKE GAME</h1>
+        <ScoreBoard />
         <GameArea height={600} width={600} />
       </div>
     </Provider>

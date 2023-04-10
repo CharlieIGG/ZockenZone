@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CANVAS_HEIGHT, CANVAS_WIDTH, generateRandomPosition, generateStartingSnake, SNAKE_SEGMENT_SIZE } from '../../utilities';
+import { BASE_FOOD_VALUE, CANVAS_HEIGHT, CANVAS_WIDTH, generateRandomPosition, generateStartingSnake, SNAKE_SEGMENT_SIZE } from '../../utilities';
 
 interface Coordinate {
     x: number;
@@ -11,6 +11,8 @@ export interface GameState {
     food: Coordinate;
     direction: 'UP' | 'RIGHT' | 'DOWN' | 'LEFT';
     gameOver: boolean;
+    score: number;
+    highScore: number;
 }
 
 const initialState: GameState = {
@@ -18,6 +20,8 @@ const initialState: GameState = {
     food: generateRandomPosition(),
     direction: 'RIGHT',
     gameOver: false,
+    score: 0,
+    highScore: localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore') as string) : 0,
 };
 
 const gameSlice = createSlice({
@@ -56,6 +60,7 @@ const gameSlice = createSlice({
 
             // Check if snake has eaten the food
             if (newHead.x === food.x && newHead.y === food.y) {
+                state.score += BASE_FOOD_VALUE
                 state.food = generateNewFood(snake);
             } else {
                 snake.pop();
@@ -79,8 +84,14 @@ const gameSlice = createSlice({
             }
         },
 
-        resetGame: () => {
-            return initialState;
+        resetGame: (state) => {
+            let highScore = state.highScore
+            console.log(highScore, state.score)
+            if (state.score > highScore) {
+                highScore = state.score;
+                localStorage.setItem('highScore', state.score.toString());
+            }
+            return Object.assign({}, initialState, { highScore: highScore });
         },
     },
 });

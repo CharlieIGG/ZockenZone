@@ -1,6 +1,8 @@
 export const SNAKE_SEGMENT_SIZE = 20;
 export const CANVAS_WIDTH = 600;
 export const CANVAS_HEIGHT = 600;
+export const BASE_SPEED = 100;
+export const BASE_FOOD_VALUE = 20;
 
 if (CANVAS_WIDTH % SNAKE_SEGMENT_SIZE !== 0 || CANVAS_HEIGHT % SNAKE_SEGMENT_SIZE !== 0) {
     console.warn("Your canvas size and snake segment size are not compatible");

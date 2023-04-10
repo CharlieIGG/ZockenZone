@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { clearBoard, drawObject, generateRandomPosition } from "../utilities";
+import { clearBoard, drawObject } from "../utilities";
 import { useDispatch, useSelector } from "react-redux";
 import { GameState, changeDirection, moveSnake } from "../store/reducers";
 
