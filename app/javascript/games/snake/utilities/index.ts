@@ -14,19 +14,42 @@ export const clearBoard = (context: CanvasRenderingContext2D | null) => {
     }
 }
 
-export interface IObjectPosition {
+export interface Coordinate {
     x: number;
     y: number;
 }
 
+export const FOODS = Object.freeze({
+    apple: {
+        probability: 0.5,
+        color: "red"
+    },
+    blueberry: {
+        probability: 0.3,
+        color: "blue"
+    },
+    banana: {
+        probability: 0.2,
+        color: "yellow"
+    },
+})
+
+export type FoodType = keyof typeof FOODS;
+
+export interface Food extends Coordinate {
+    type: FoodType;
+    color: string;
+}
+
+
 export const drawObject = (
     context: CanvasRenderingContext2D | null,
-    objectBody: IObjectPosition[],
+    objectBody: Coordinate[],
     fillColor: string,
     strokeStyle = "#146356"
 ) => {
     if (context) {
-        objectBody.forEach((object: IObjectPosition) => {
+        objectBody.forEach((object: Coordinate) => {
             context.fillStyle = fillColor;
             context.strokeStyle = strokeStyle;
             context?.fillRect(object.x, object.y, SNAKE_SEGMENT_SIZE, SNAKE_SEGMENT_SIZE);
@@ -36,16 +59,33 @@ export const drawObject = (
 };
 
 // generate a random starting position for the snake
-export const generateRandomPosition = (): IObjectPosition => {
+export const generateRandomPosition = (): Coordinate => {
     const x = Math.floor(Math.random() * SNAKE_SEGMENT_SIZE) * SNAKE_SEGMENT_SIZE;
     const y = Math.floor(Math.random() * SNAKE_SEGMENT_SIZE) * SNAKE_SEGMENT_SIZE;
     return { x, y };
 }
 
-export const generateStartingSnake = (): IObjectPosition[] => {
-    const startingSnake: IObjectPosition[] = [];
+export const generateStartingSnake = (): Coordinate[] => {
+    const startingSnake: Coordinate[] = [];
     for (let i = 0; i < 5; i++) {
         startingSnake.push({ x: CANVAS_WIDTH / 2 - i * SNAKE_SEGMENT_SIZE, y: CANVAS_HEIGHT / 2 });
     }
     return startingSnake;
 }
+
+export const generateNewFood = (snake: Coordinate[]) => {
+    let food: Food;
+    const foodTypes = Object.keys(FOODS) as FoodType[];
+    const newFoodType = foodTypes.reduce((acc, food) => {
+        const probability = FOODS[food].probability;
+        return Math.random() < probability ? food : acc;
+    }, foodTypes[0]);
+    // Generate random coordinates for the food
+    do {
+        food = { type: newFoodType, color: FOODS[newFoodType].color, x: 0, y: 0 };
+        food = Object.assign(food, generateRandomPosition());
+    } while (snake.some((part) => part.x === food.x && part.y === food.y));
+
+    return food;
+};
+

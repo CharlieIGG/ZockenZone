@@ -8,25 +8,25 @@ export const Instructions = () => {
         <div className="mt-3 card">
             <div className="card-body">
                 <h6 className="card-title">How to Play</h6>
-                <h5 className="mt-1">
-                    NOTE: Start the game by pressing <kbd>d</kbd>
+                <h5 className="m-3">
+                    Start the game by pressing <kbd>d</kbd> or <kbd>&rarr;</kbd>
                 </h5>
                 <div className="row mt-3">
-                    <div className="col-md-6">
+                    <div className="col-md-6 d-flex flex-column align-items-start">
                         <div>
-                            <kbd>w / &uarr;</kbd> Move Up
+                            <kbd>w / &uarr;</kbd> <span className="ms-2">Move Up</span>
                         </div>
                         <div>
-                            <kbd>a / &larr;</kbd> Move Left
+                            <kbd>a / &larr;</kbd> <span className="ms-2">Move Left</span>
                         </div>
                         <div>
-                            <kbd>s / &darr;</kbd> Move Down
+                            <kbd>s / &darr;</kbd> <span className="ms-2">Move Down</span>
                         </div>
                         <div>
-                            <kbd>d / &rarr;</kbd> Move Right
+                            <kbd>d / &rarr;</kbd> <span className="ms-2">Move Right</span>
                         </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-6 d-flex align-items-center">
                         <button className="btn btn-primary" onClick={() => dispatch(resetGame())}>
                             Reset game
                         </button>

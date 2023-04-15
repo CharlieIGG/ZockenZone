@@ -1,23 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BASE_FOOD_VALUE, CANVAS_HEIGHT, CANVAS_WIDTH, generateRandomPosition, generateStartingSnake, SNAKE_SEGMENT_SIZE } from '../../utilities';
-
-interface Coordinate {
-    x: number;
-    y: number;
-}
+import { BASE_FOOD_VALUE, CANVAS_HEIGHT, CANVAS_WIDTH, Coordinate, Food, generateNewFood, generateStartingSnake, SNAKE_SEGMENT_SIZE } from '../../utilities';
 
 export interface GameState {
     snake: Coordinate[];
-    food: Coordinate;
+    food: Food;
     direction: 'UP' | 'RIGHT' | 'DOWN' | 'LEFT';
     gameOver: boolean;
     score: number;
     highScore: number;
 }
 
+const initiatlSnake = generateStartingSnake();
+
 const initialState: GameState = {
-    snake: generateStartingSnake(),
-    food: generateRandomPosition(),
+    snake: initiatlSnake,
+    food: generateNewFood(initiatlSnake),
     direction: 'RIGHT',
     gameOver: false,
     score: 0,
@@ -28,6 +25,9 @@ const gameSlice = createSlice({
     name: 'game',
     initialState,
     reducers: {
+        spawnFruit: (state) => {
+            state.food = generateNewFood(state.snake);
+        },
         moveSnake: (state) => {
             const { snake, direction, food } = state;
             const head = snake[0];
@@ -95,17 +95,6 @@ const gameSlice = createSlice({
         },
     },
 });
-
-const generateNewFood = (snake: Coordinate[]) => {
-    let food: Coordinate;
-
-    // Generate random coordinates for the food
-    do {
-        food = generateRandomPosition()
-    } while (snake.some((part) => part.x === food.x && part.y === food.y));
-
-    return food;
-};
 
 export const { moveSnake, changeDirection, resetGame } = gameSlice.actions;
 export default gameSlice.reducer;

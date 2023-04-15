@@ -11,11 +11,15 @@ import { GameState } from "./store/reducers";
 const SnakeComponents = () => {
   const gameOver = useSelector((state: GameState) => state.gameOver);
   return (
-    <>
-      <ScoreBoard />
-      {gameOver ? <GameOver /> : <GameArea height={600} width={600} />}
-      <Instructions />
-    </>
+    <div className="row mt-5">
+      <div className="col">
+        {gameOver ? <GameOver height={600} width={600} /> : <GameArea height={600} width={600} />}
+      </div>
+      <div className="col d-flex justify-content-center flex-column">
+        <ScoreBoard />
+        <Instructions />
+      </div>
+    </div>
   )
 }
 
