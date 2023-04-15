@@ -1,4 +1,4 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
+import { put, takeEvery, select, delay } from 'redux-saga/effects';
 import { RootState } from '../index';
 import { moveSnake, resetGame } from '../reducers';
 import { BASE_SPEED } from '../../utilities';
@@ -12,8 +12,9 @@ function* moveSnakeSaga(): Generator<any, any, any> {
         return;
     } else {
         const speedBonus = 1 + (score) / 750;
-        yield delay(BASE_SPEED / speedBonus);
-        yield put(moveSnake());
+        const delayTime = BASE_SPEED / speedBonus
+        yield delay(delayTime);
+        yield put(moveSnake(delayTime));
     }
 }
 
@@ -24,4 +25,3 @@ export default function* gameSaga() {
 const selectScore = (state: RootState) => state.score;
 const selectGameOver = (state: RootState) => state.gameOver;
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

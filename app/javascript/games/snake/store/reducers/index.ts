@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { BASE_FOOD_VALUE, CANVAS_HEIGHT, CANVAS_WIDTH, Coordinate, Food, generateNewFood, generateStartingSnake, SNAKE_SEGMENT_SIZE } from '../../utilities';
+import { BASE_FOOD_VALUE, CANVAS_HEIGHT, CANVAS_WIDTH, ICoordinate, IFood, generateNewFood, generateStartingSnake, SNAKE_SEGMENT_SIZE } from '../../utilities';
 
 export interface GameState {
-    snake: Coordinate[];
-    food: Food;
+    snake: ICoordinate[];
+    food: IFood;
     direction: 'UP' | 'RIGHT' | 'DOWN' | 'LEFT';
     gameOver: boolean;
     score: number;
@@ -28,11 +28,12 @@ const gameSlice = createSlice({
         spawnFruit: (state) => {
             state.food = generateNewFood(state.snake);
         },
-        moveSnake: (state) => {
+        moveSnake: (state, action: PayloadAction<number>) => {
             const { snake, direction, food } = state;
+            food.timeLeft -= action.payload;
             const head = snake[0];
 
-            let newHead: Coordinate = head;
+            let newHead: ICoordinate = head;
             if (direction === 'UP') {
                 newHead = { x: head.x, y: head.y - SNAKE_SEGMENT_SIZE };
             } else if (direction === 'RIGHT') {
@@ -96,5 +97,5 @@ const gameSlice = createSlice({
     },
 });
 
-export const { moveSnake, changeDirection, resetGame } = gameSlice.actions;
+export const { moveSnake, changeDirection, resetGame, spawnFruit } = gameSlice.actions;
 export default gameSlice.reducer;

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { clearBoard, drawObject } from "../utilities";
+import { DEFAULT_FOOD_DURATION, clearBoard, drawFood, drawObject } from "../utilities";
 import { useDispatch, useSelector } from "react-redux";
-import { GameState, changeDirection, moveSnake } from "../store/reducers";
+import { GameState, changeDirection, moveSnake, spawnFruit } from "../store/reducers";
 
 export interface ICanvasBoard {
   height: number;
@@ -24,13 +24,20 @@ export const GameArea = ({ height, width }: ICanvasBoard) => {
     setCtx(canvasContext);
     clearBoard(ctx)
     drawObject(ctx, snake, "green");
-    drawObject(ctx, [food], "red");
+    drawFood(ctx, food);
   }, [ctx, snake]);
 
   // start moving the snake
   useEffect(() => {
-    dispatch(moveSnake());
+    dispatch(moveSnake(0));
   }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(spawnFruit());
+    }, DEFAULT_FOOD_DURATION);
+    return () => clearInterval(interval);
+  }, [dispatch]);
 
   const handleKeyEvents = useCallback(
     (event: KeyboardEvent) => {
